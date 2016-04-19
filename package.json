@@ -1,0 +1,26 @@
+{
+  "name": "cyclejs-test-dashboard",
+  "version": "1.0.0",
+  "description": "A simple example demonstrating how cycle.js and socket.io work together.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "lodash": "^4.11.1",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkretschek/cyclejs-test-dashboard.git"
+  },
+  "author": "Mathias Kretschek <contact@mathias.ms>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkretschek/cyclejs-test-dashboard/issues"
+  },
+  "homepage": "https://github.com/mkretschek/cyclejs-test-dashboard#readme"
+}
