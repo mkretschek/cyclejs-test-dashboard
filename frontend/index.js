@@ -21,11 +21,10 @@ console.log('@@@@@@@@@@@@@@@@@@@@', Cycle);
 console.log('>>>>>>>>>>>>>>>>>>>>', CycleDOM);
 console.log('>>>>>>>>>>>>>>>>>>>>', Rx);
 
-function main (sources) {
 
-  var props$ = sources.props$;
+function Category(data) {
 
-  var vtree$ = props$.map(function (category) {
+  var vtree$ = Observable.of(data).map(function (category) {
     var title = p('.category-title', category.name);
     var orders = div('.category-property.category-orders', ['# orders:', span(null, category.orders)]);
     var totalNoi = div('.category-property.category-amount', ['Amount:', span(null, category.amount)]);
@@ -38,8 +37,23 @@ function main (sources) {
 }
 
 
+function main(sources) {
+  var props$ = sources.props$;
+  var vtree$ = props$.map(function (category) {
+    return Category(category).DOM;
+  });
+
+  return {DOM: vtree$};
+}
+
+
 var drivers = {
-  props$: function () { return Observable.of({name: 'bedroom', orders: 0, amount: 1}) },
+  props$: function () {
+    return Observable.from([
+      {name: 'bedroom', orders: 0, amount: 1},
+      {name: 'kitchen', orders: 0, amount: 2}
+    ]);
+  },
   DOM: window.CycleDOM.makeDOMDriver('#main-container')
 };
 
