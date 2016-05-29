@@ -17,14 +17,11 @@ console.log('@@@@@@@@@@@@@@@@@@@@', Cycle);
 console.log('>>>>>>>>>>>>>>>>>>>>', CycleDOM);
 console.log('>>>>>>>>>>>>>>>>>>>>', Rx);
 
-function main () {
+function main (sources) {
 
-  var source$ = Observable.from([
-    {category: 'bedroom', orders: 0, amount: 0},
-    {category: 'kitchen', orders: 2, amount: 0},
-  ]);
-
-  var vtree$ = source$.map(function (el) {
+  var props$ = sources.props$;
+  var vtree$ = props$.map(function (el) {
+    console.log(el);
     return CycleDOM.p('num. of orders ' + el.orders);
   });
 
@@ -35,6 +32,7 @@ function main () {
 
 
 var drivers = {
+  props$: function () { return Observable.of({category: 'bedroom', orders: 0, amount: 0}) },
   DOM: window.CycleDOM.makeDOMDriver('#main-container')
 };
 
