@@ -39,17 +39,25 @@ function Category(data) {
 
 function main(sources) {
   var props$ = sources.props$;
-  var vtree$ = props$.map(function (category) {
-    return Category(category).DOM;
+
+  var vtree$ = props$.map(function (categoriesList) {
+    return div(
+        'Categories',
+        categoriesList.map(function (categoryData) {
+          return Category(categoryData).DOM;
+        })
+    )
   });
 
-  return {DOM: vtree$};
+  return {
+    DOM: vtree$
+  };
 }
 
 
 var drivers = {
   props$: function () {
-    return Observable.from([
+    return Observable.of([
       {name: 'bedroom', orders: 0, amount: 1},
       {name: 'kitchen', orders: 0, amount: 2}
     ]);
