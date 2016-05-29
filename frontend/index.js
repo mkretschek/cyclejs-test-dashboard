@@ -4,6 +4,7 @@ console.info('Connecting to socket.io...');
 var socket = io('http://localhost:8888');
 var Observable = Rx.Observable;
 
+var h1 = CycleDOM.h1;
 var div = CycleDOM.div;
 var span = CycleDOM.span;
 var p = CycleDOM.p;
@@ -40,16 +41,20 @@ function Category(data) {
 function main(sources) {
 
   var socket$ = Observable.fromEvent(socket, 'addOrder');
-
   var props$ = sources.props$;
+  var values$ = props$.concat(socket$);
 
-  var vtree$ = props$.map(function (categoriesList) {
-    return div(
-        'Categories',
-        categoriesList.map(function (categoryData) {
-          return Category(categoryData).DOM;
-        })
-    )
+  var vtree$ = Observable.combineLatest(props$, values$, function (props) {
+    return div([
+              h1('Categories'),
+              div(
+                props.categories.map(function (categoryData) {
+                  return Category(categoryData).DOM;
+                })
+              ),
+              p('Total ' + props.total)
+          ]
+        )
   });
 
   return {
@@ -60,10 +65,13 @@ function main(sources) {
 
 var drivers = {
   props$: function () {
-    return Observable.of([
-      {name: 'bedroom', orders: 0, amount: 1},
-      {name: 'kitchen', orders: 0, amount: 2}
-    ]);
+    return Observable.of({
+      categories: [
+        {name: 'bedroom', orders: 0, amount: 0},
+        {name: 'kitchen', orders: 0, amount: 0}
+      ],
+      total: 0
+    });
   },
   DOM: window.CycleDOM.makeDOMDriver('#main-container')
 };
