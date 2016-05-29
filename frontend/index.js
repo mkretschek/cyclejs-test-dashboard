@@ -4,6 +4,10 @@ console.info('Connecting to socket.io...');
 var socket = io('http://localhost:8888');
 var Observable = Rx.Observable;
 
+var div = CycleDOM.div;
+var span = CycleDOM.span;
+var p = CycleDOM.p;
+
 socket.on('connect', function () {
   console.info('connected');
 
@@ -20,9 +24,12 @@ console.log('>>>>>>>>>>>>>>>>>>>>', Rx);
 function main (sources) {
 
   var props$ = sources.props$;
-  var vtree$ = props$.map(function (el) {
-    console.log(el);
-    return CycleDOM.p('num. of orders ' + el.orders);
+
+  var vtree$ = props$.map(function (category) {
+    var title = p('.category-title', category.name);
+    var orders = div('.category-property.category-orders', ['# orders:', span(null, category.orders)]);
+    var totalNoi = div('.category-property.category-amount', ['Amount:', span(null, category.amount)]);
+    return div('.category', [title, orders, totalNoi]);
   });
 
   return {
@@ -32,7 +39,7 @@ function main (sources) {
 
 
 var drivers = {
-  props$: function () { return Observable.of({category: 'bedroom', orders: 0, amount: 0}) },
+  props$: function () { return Observable.of({name: 'bedroom', orders: 0, amount: 1}) },
   DOM: window.CycleDOM.makeDOMDriver('#main-container')
 };
 
