@@ -38,6 +38,9 @@ function Category(data) {
 
 
 function main(sources) {
+
+  var socket$ = Observable.fromEvent(socket, 'addOrder');
+
   var props$ = sources.props$;
 
   var vtree$ = props$.map(function (categoriesList) {

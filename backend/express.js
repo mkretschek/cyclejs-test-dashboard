@@ -6,6 +6,8 @@ const express = require('express');
 const orders = require('./orders');
 const io = require('./socket');
 
+const map = require('lodash/map');
+
 const app = module.exports = express();
 
 app.use(bodyParser.json());
@@ -15,12 +17,12 @@ app.post('/orders', (req, res) => {
   if (orders.add(req.body)) {
     io.emit('addOrder', {
       total: orders.total,
-      categories: orders.categories
+      categories: map(orders.categories, (category, name) => Object.assign({name}, category))
     });
   }
 
   res.send({
-    categories: orders.categories,
+    categories: map(orders.categories, (category, name) => Object.assign({name}, category)),
     total: orders.total
   });
 });
@@ -35,7 +37,7 @@ app.get('/orders', (req, res) => {
 app.get('/orders/summary', (req, res) => {
   res.send({
     total: orders.total,
-    categories: orders.categories
+    categories: map(orders.categories, (category, name) => Object.assign({name}, category))
   });
 });
 
