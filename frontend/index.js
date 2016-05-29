@@ -44,15 +44,15 @@ function main(sources) {
   var props$ = sources.props$;
   var values$ = props$.concat(socket$);
 
-  var vtree$ = Observable.combineLatest(props$, values$, function (props) {
+  var vtree$ = Observable.combineLatest(props$, values$, function (props, values) {
     return div([
               h1('Categories'),
               div(
-                props.categories.map(function (categoryData) {
+                values.categories.map(function (categoryData) {
                   return Category(categoryData).DOM;
                 })
               ),
-              p('Total ' + props.total)
+              p('Total ' + values.total)
           ]
         )
   });
