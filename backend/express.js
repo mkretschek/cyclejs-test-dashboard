@@ -43,4 +43,7 @@ app.get('/orders/summary', (req, res) => {
 // Make the frontend files available
 app.use(express.static('frontend'));
 app.use(express.static('node_modules/socket.io-client'));
+app.use(express.static('node_modules/rx/dist'));
+app.use(express.static('node_modules/@cycle/core/dist'));
+app.use(express.static('node_modules/@cycle/dom/dist'));
 
